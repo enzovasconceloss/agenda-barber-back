@@ -1,27 +1,31 @@
 import express from "express";
-import clienteController from "../controller/clienteController.js";
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.json({
+    mensagem: "Rota de clientes funcionando!"
+  });
+});
 
-// Buscar todos os clientes
-router.get("/", clienteController.getAll);
+router.post("/", (req, res) => {
+  const { nome, email, telefone, senha } = req.body;
 
+  if (!nome || !email || !telefone || !senha) {
+    return res.status(400).json({
+      mensagem: "Preencha todos os campos!"
+    });
+  }
 
-// Buscar cliente por ID
-router.get("/:id", clienteController.getById);
+  console.log("Dados recebidos do Front-End:");
+  console.log("Nome:", nome);
+  console.log("Email:", email);
+  console.log("Telefone:", telefone);
+  console.log("Senha:", senha);
 
-
-// Cadastrar cliente
-router.post("/", clienteController.create);
-
-
-// Atualizar cliente
-router.put("/:id", clienteController.update);
-
-
-// Excluir cliente
-router.delete("/:id", clienteController.remove);
-
+  return res.status(201).json({
+    mensagem: "Cadastro realizado com sucesso!"
+  });
+});
 
 export default router;
